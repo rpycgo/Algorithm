@@ -1,15 +1,11 @@
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
-        counts = {}
+        candidate = None
+        count = 0
 
         for num in nums:
-            if num not in counts:
-                counts.update({num: 1})
-            else:
-                counts[num] += 1
+            if count == 0:
+                candidate = num
+            count += (1 if num == candidate else -1)
 
-        max_value = max(counts.values())
-
-        for key, value in counts.items():
-            if value == max_value:
-                return key
+        return candidate
