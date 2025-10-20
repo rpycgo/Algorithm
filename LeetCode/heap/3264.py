@@ -7,11 +7,11 @@ class Solution:
         count = 0
         while count != k:
             minimum_value, i = heapq.heappop(nums)
-            results[i] = minimum_value * multiplier
+            new_value = minimum_value * multiplier
+            results[i] = new_value
 
-            nums = [(num, i) for i, num in enumerate(results)]
-            heapq.heapify(nums)
+            heapq.heappush(nums, (new_value, i))
 
-            count += 1
+            count +=1
 
         return results
