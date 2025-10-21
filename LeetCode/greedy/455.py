@@ -10,5 +10,5 @@ class Solution:
                 j += 1
             else:
                 j += 1
-        
-        return min(i, j)
+
+        return i
