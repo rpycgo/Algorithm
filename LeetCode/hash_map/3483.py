@@ -1,32 +1,25 @@
 class Solution:
     def totalNumbers(self, digits: List[int]) -> int:
-        digits = [str(digit) for digit in digits]
-        numbers = set()
+        n = len(digits)
+        seen = set()
 
-        n_digits = len(digits)
-        for i in range(n_digits-2):
-            for j in range(i+1, n_digits-1):
-                for k in range(j+1, n_digits):
-                    number = ''.join([digits[i], digits[j], digits[k]])
-                    if not number.startswith('0') and int(number)%2 == 0:
-                        numbers.add(number)
+        for i in range(n):
+            for j in range(n):
+                if j == i:
+                    continue
+                for k in range(n):
+                    if k == i or k == j:
+                        continue
 
-                    reversed_number = number[::-1]
-                    if not reversed_number.startswith('0') and int(reversed_number)%2 == 0:
-                        numbers.add(reversed_number)
+                    a, b, c = digits[i], digits[j], digits[k]
 
-                    count = 0
-                    while count < 2:
-                        number = number[-1] + number[:2]
-                        if number not in numbers and not number.startswith('0') and int(number)%2 == 0:
-                            numbers.add(number)
-                        
-                        reversed_number = number[::-1]
-                        if not reversed_number.startswith('0') and int(reversed_number)%2 == 0:
-                            numbers.add(reversed_number)
-        
-                        count += 1
+                    if a == 0:
+                        continue
+                    if c%2 != 0:
+                        continue
 
-        answer = len(numbers)
+                    seen.add(a*100 + b*10 + c)
+
+        answer = len(seen)
 
         return answer
