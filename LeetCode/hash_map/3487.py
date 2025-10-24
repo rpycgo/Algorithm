@@ -1,19 +1,15 @@
 class Solution:
     def maxSum(self, nums: List[int]) -> int:
-        unique_array = set()
-        for num in nums:
-            if num not in unique_array:
-                unique_array.add(num)
-        
-        unique_array = tuple(unique_array)
-        all_negative = True
-        for num in unique_array:
-            if num > 0:
-                all_negative = False
+        unique_nums = set(nums)
 
-        if all_negative:
-            answer = max(unique_array)
-        else:
-            answer = sum([num for num in unique_array if num > 0])
+        max_num = float('-inf')
+        positive_sum = 0
+        for num in unique_nums:
+            if num > 0:
+                positive_sum += num
+            if num > max_num:
+                max_num = num
+
+        answer = positive_sum if positive_sum > 0 else max_num
 
         return answer
