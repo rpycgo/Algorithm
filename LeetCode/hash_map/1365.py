@@ -1,16 +1,12 @@
 class Solution:
     def smallerNumbersThanCurrent(self, nums: List[int]) -> List[int]:
-        answer = []
-        for i in range(len(nums)):
-            count = 0
+        sorted_nums = sorted(nums)
+        hashmap = {}
 
-            for j in range(len(nums)):
-                if i == j:
-                    continue
-                
-                if nums[j] < nums[i]:
-                    count += 1
-        
-            answer.append(count)
+        for i, num in enumerate(sorted_nums):
+            if num not in hashmap:
+                hashmap[num] = i
+
+        answer = [hashmap[num] for num in nums]
 
         return answer
