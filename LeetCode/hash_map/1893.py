@@ -1,16 +1,16 @@
 class Solution:
     def isCovered(self, ranges: List[List[int]], left: int, right: int) -> bool:
-        answer = [False] * right
-        for range_ in ranges:
-            start, end = range_
-            
-            for i in range(start-1, end):
-                if i >= right:
-                    continue
+        diff = [0] * 52
 
-                answer[i] = True
+        for start, end in ranges:
+            diff[start] += 1
+            diff[end + 1] -= 1
 
-            if sum(answer[left-1:right]) == right-left+1:
-                return True
-        
-        return False
+        coverage = 0
+        for i in range(1, right + 1):
+            coverage += diff[i]
+
+            if left <= i <= right and coverage <= 0:
+                return False
+
+        return True
