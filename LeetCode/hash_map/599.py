@@ -1,15 +1,17 @@
 class Solution:
     def findRestaurant(self, list1: List[str], list2: List[str]) -> List[str]:
-        common_strings = set(list1) & set(list2)
+        index_map = {name: i for i, name in enumerate(list2)}
+        min_index_sum = float('inf')
+        result = []
 
-        min_sum_index = float('inf')
-        common_string_with_min_sum_index = ['']
-        for common_string in common_strings:
-            if list1.index(common_string) + list2.index(common_string) < min_sum_index:
-                min_sum_index = list1.index(common_string) + list2.index(common_string)
-                common_string_with_min_sum_index[0] = common_string
-            elif list1.index(common_string) + list2.index(common_string) == min_sum_index:
-                min_sum_index = list1.index(common_string) + list2.index(common_string)
-                common_string_with_min_sum_index.append(common_string)
+        for i, name in enumerate(list1):
+            if name in index_map:
+                total = i + index_map[name]
 
-        return common_string_with_min_sum_index
+                if total < min_index_sum:
+                    min_index_sum = total
+                    result = [name]
+                elif total == min_index_sum:
+                    result.append(name)
+
+        return result
