@@ -1,11 +1,17 @@
 class Solution:
     def maximum69Number (self, num: int) -> int:
-        for i, char in enumerate(str(num)):
+        s = list(str(num))
+        i = -1
+
+        for idx, char in enumerate(s):
             if char == '6':
+                i = idx
+
                 break
-        else:
+
+        if i == -1:
             return num
 
-        answer = ''.join([str(num)[:i], '9', str(num)[i+1:]])
+        s[i] = '9'
 
-        return int(answer)
+        return int(''.join(s))
