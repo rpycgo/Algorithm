@@ -1,12 +1,24 @@
 class Solution:
     def findShortestSubArray(self, nums: List[int]) -> int:
-        count = Counter(nums)
-        maximum_value = max(count.values())
-        maximum_keys = [key for key, value in count.items() if value == maximum_value]
+        count = defaultdict(int)
+        first_index = {}
+        last_index = {}
 
-        answer = float('inf')
-        for maximum_key in maximum_keys:
-            if len(nums)-nums[::-1].index(maximum_key)-1 - nums.index(maximum_key) < answer:
-                answer = len(nums)-nums[::-1].index(maximum_key)-1 - nums.index(maximum_key) + 1
+        for i, num in enumerate(nums):
+            count[num] += 1
+
+            if num not in first_index:
+                first_index[num] = i
+
+            last_index[num] = i
+
+        degree = max(count.values())
+        answer = len(nums)
+
+        for num in count:
+            if count[num] == degree:
+                length = last_index[num] - first_index[num] + 1
+
+                answer = min(answer, length)
 
         return answer
