@@ -1,18 +1,6 @@
 class Solution:
     def minCostToMoveChips(self, position: List[int]) -> int:
-        if len(position) == 1:
-            return 0
+        even = sum(num%2 == 0 for num in position)
+        odd = len(position) - even
 
-        count = defaultdict(int)
-        for num in position:
-            if num%2 == 0:
-                count['even'] += 1
-            else:
-                count['odd'] += 1
-
-        if len(count) == 1:
-            return 0
-
-        answer = min(count.values())
-
-        return answer
+        return min(even, odd)
