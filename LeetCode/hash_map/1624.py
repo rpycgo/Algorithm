@@ -1,16 +1,13 @@
 class Solution:
     def maxLengthBetweenEqualCharacters(self, s: str) -> int:
-        start_map = defaultdict(int)
-        end_map = defaultdict(int)
-
+        start_map = {}
         longest_substring = -1
+
         for i, char in enumerate(s):
             if char in start_map:
-                end_map[char] = i
+                diff = i - start_map[char] - 1
 
-                diff = end_map[char] - start_map[char] - 1
-
-                if longest_substring < diff:
+                if diff > longest_substring:
                     longest_substring = diff
             else:
                 start_map[char] = i
