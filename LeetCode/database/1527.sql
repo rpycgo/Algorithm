@@ -1,6 +1,8 @@
-SELECT
+SELECT 
     patient_id, patient_name, conditions
-FROM
+FROM 
     Patients
-WHERE
-    conditions REGEXP '(^|[[:space:]])DIAB1'
+WHERE 
+    conditions LIKE 'DIAB1%'
+    OR 
+    conditions LIKE '% DIAB1%'
