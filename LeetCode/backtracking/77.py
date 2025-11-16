@@ -13,11 +13,8 @@ class Solution:
             return
 
         for i in range(start, len(candidates)):
-            if i > start and candidates[i] == candidates[i-1]:
-                continue
-
             path.append(candidates[i])
 
-            self.backtrack(answer, candidates[i+1:], start, path, k)
+            self.backtrack(answer, candidates, i+1, path, k)
 
             path.pop()
