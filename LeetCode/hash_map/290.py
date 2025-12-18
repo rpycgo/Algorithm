@@ -1,20 +1,20 @@
 class Solution:
     def wordPattern(self, pattern: str, s: str) -> bool:
-        hash_map = defaultdict(int)
+        words = s.split()
 
-        s = s.split()
-
-        if len(pattern) != len(s):
+        if len(pattern) != len(words):
             return False
 
-        for char, word in zip(pattern, s):
-            print(char, hash_map)
-            if char not in hash_map:
-                hash_map[char] = word
-            elif hash_map[char] != word:
+        pattern2word = {}
+        word2pattern = {}
+
+        for char, word in zip(pattern, words):
+            if char in pattern2word and pattern2word[char] != word:
+                return False
+            if word in word2pattern and word2pattern[word] != char:
                 return False
 
-        if len(set(hash_map.keys())) != len(set(hash_map.values())):
-            return False
+            pattern2word[char] = word
+            word2pattern[word] = char
 
         return True
