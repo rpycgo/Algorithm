@@ -1,15 +1,12 @@
 class Solution:
     def lastStoneWeightII(self, stones: List[int]) -> int:
-        S = sum(stones)
-        target = S // 2
-
-        dp = [False] * (target+1)
-        dp[0] = True
-
+        bits = 1
         for stone in stones:
-            for j in range(target, stone-1, -1):
-                dp[j] = dp[j] or dp[j-stone]
+            bits |= bits << stone
+
+        total = sum(stones)
+        target = total // 2
 
         for j in range(target, -1, -1):
-            if dp[j]:
-                return S - 2*j
+            if (bits >> j) & 1:
+                return total - 2*j
