@@ -11,13 +11,16 @@ class Solution:
                 return
 
             inorder(node.left)
-            values.append(node.val)
+
+            if self.prev is not None:
+                self.answer = min(self.answer, node.val-self.prev)
+            self.prev = node.val
+
             inorder(node.right)
 
-        values = []
+        self.prev = None
+        self.answer = float('inf')
 
         inorder(root)
 
-        answer = min([cur - prev for cur, prev in zip(values[1:], values[:-1])])
-
-        return answer
+        return self.answer
