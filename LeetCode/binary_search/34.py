@@ -7,12 +7,8 @@ class Solution:
         idx_right = bisect_right(nums, target) - 1
 
         if idx_left < len(nums) and nums[idx_left] == target:
-            pass
+            answer = [idx_left, idx_right]
         else:
-            idx_left = -1
-        if nums[idx_right] != target:
-            idx_right = -1    
-
-        answer = [idx_left, idx_right]
+            answer = [-1, -1]
 
         return answer
