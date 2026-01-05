@@ -8,7 +8,7 @@ class Solution:
 
             total_time = 0
             for pile in piles:
-                total_time += (pile+mid-1) // mid
+                total_time += ceil(pile/mid)
 
             if total_time <= h:
                 right = mid - 1
