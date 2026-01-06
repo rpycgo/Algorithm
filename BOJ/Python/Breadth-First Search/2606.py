@@ -1,45 +1,35 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Dec 20 19:57:57 2021
-
-@author: MJH
-"""
+import sys
+from collections import deque
 
 
-
-visited = []
-graph = []
-cnt = 0
-
-
-def bfs(edge: int) -> None:
-    global visited, graph, cnt
-    
-    queue = [edge]
-    while queue:
-        for next_ in graph[queue.pop()]:
-            if not visited[next_]:
-                visited[next_]=True
-                queue.append(next_)
-                cnt += 1
-  
 def main():
-    global visited, graph, cnt
-    node = int(input())
-    edge = int(input())
-    
-    visited = [False for _ in range(node+1)]
-    graph = [[] for _ in range(node+1)]
-    
-    
-    for _ in range(edge):
+    input = sys.stdin.readline
+
+    n = int(input())
+    m = int(input())
+
+    graph = [[] for _ in range(n+1)]
+    for _ in range(m):
         u, v = map(int, input().split())
         graph[u].append(v)
         graph[v].append(u)
-    
-    bfs(1)
-    print(cnt-1)
+
+    visited = [False] * (n+1)
+    visited[1] = True
+    queue = deque([1])
+    answer = 0
+
+    while queue:
+        current_node = queue.popleft()
+
+        for neighbor in graph[current_node]:
+            if not visited[neighbor]:
+                visited[neighbor] = True
+                queue.append(neighbor)
+                answer += 1
+
+    print(answer)
 
 
 if __name__ == '__main__':
-    main()        
+    main()
