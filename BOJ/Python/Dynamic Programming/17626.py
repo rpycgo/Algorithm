@@ -9,13 +9,16 @@ def main():
     dp = [0] * (n+1)
     dp[1] = 1
 
+    squares = [i*i for i in range(1, int(n**0.5)+1)]
     for i in range(2, n+1):
         min_val = 4
 
-        j = 1
-        while j*j <= i:
-            min_val = min(min_val, dp[i - j*j])
-            j += 1
+        for square in squares:
+            if i < square:
+                break
+
+            if dp[i-square] < min_val:
+                min_val = dp[i-square]
 
         dp[i] = min_val + 1
 
