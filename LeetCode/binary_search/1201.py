@@ -1,7 +1,7 @@
 class Solution:
     def nthUglyNumber(self, n: int, a: int, b: int, c: int) -> int:
         left = 1
-        right = a * b * c
+        right = 2 * 10**9
 
         answer = right
         while left <= right:
@@ -16,9 +16,12 @@ class Solution:
         return answer
 
     def get_n_ugly_number(self, mid, a, b, c):
-        count = 0
-        for i in range(1, mid+1):
-            if i%a == 0 or i%b == 0 or i%c == 0:
-                count += 1
+        ab = self._lcm(a, b)
+        bc = self._lcm(b, c)
+        ac = self._lcm(a, c)
+        abc = self._lcm(ab, c)
 
-        return count
+        return mid//a + mid//b + mid//c - mid//ab - mid//bc - mid//ac + mid//abc
+
+    def _lcm(self, x, y):
+        return (x * y) // gcd(x, y)
