@@ -6,39 +6,33 @@ input = sys.stdin.readline
 
 class SegmentTree:
     def __init__(self, N):
-        self.N = N
+        self.size = 1
+        while self.size < N:
+            self.size *= 2
 
-        self.answer = 0
+        self.tree = [0] * (self.size * 2)
 
-        self.tree = [0] * (4 * N)
+    def find_k_th(self, k):
+        idx = 1
+        while idx < self.size:
+            left_idx = idx * 2
 
-    def find_k_th(self, node, start, end, k):
-        if start == end:
-            return start
+            if self.tree[left_idx] >= k:
+                idx = left_idx
+            else:
+                k -= self.tree[left_idx]
+                idx = left_idx + 1
 
-        mid = (start + end) // 2
-
-        if self.tree[node*2] >= k:
-            return self.find_k_th(node*2, start, mid, k)
-        else:
-            return self.find_k_th(node*2 + 1, mid+1, end, k-self.tree[node*2])
+        return idx - self.size + 1
 
 
-    def update(self, node, start, end, target_idx, diff):
-        if target_idx < start or target_idx > end:
-            return self.tree[node]
+    def update(self, target_idx, diff):
+        idx = self.size + target_idx - 1
 
-        if start == end:
-            self.tree[node] += diff
-            return self.tree[node]
+        while idx > 0:
+            self.tree[idx] += diff
 
-        mid = (start + end) // 2
-        left_val = self.update(node*2, start, mid, target_idx, diff)
-        right_val = self.update(node*2 + 1, mid+1, end, target_idx, diff)
-
-        self.tree[node] = left_val + right_val
-
-        return self.tree[node]
+            idx //= 2
 
 
 if __name__ == '__main__':
@@ -50,9 +44,9 @@ if __name__ == '__main__':
         cmd, X = map(int, input().split())
 
         if cmd == 1:
-            segment_tree.update(1, 1, MAX_VAL, X, 1)
+            segment_tree.update(X, 1)
         else:
-            kth_val = segment_tree.find_k_th(1, 1, MAX_VAL, X)
+            kth_val = segment_tree.find_k_th(X)
             print(kth_val)
 
-            segment_tree.update(1, 1, MAX_VAL, kth_val, -1)
+            segment_tree.update(kth_val, -1)
