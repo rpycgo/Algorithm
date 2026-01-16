@@ -6,38 +6,38 @@ input = sys.stdin.readline
 
 class SegmentTree:
     def __init__(self, size):
-        self.size = size
+        self.n = 1
+        while self.n < size:
+            self.n *= 2
 
-        self.tree = [0] * (4 * size)
+        self.tree = [0] * (self.n * 2)
 
-    def query(self, node, start, end, left, right):
-        if right < start or end < left:
-            return 0
+    def query(self, left, right):
+        left += self.n
+        right += self.n
 
-        if left <= start and end <= right:
-            return self.tree[node]
+        total = 0
+        while left <= right:
+            if left%2 == 1:
+                total += self.tree[left]
+                left += 1
 
-        mid = (start + end) // 2
-        left_val = self.query(node*2, start, mid, left, right)
-        right_val = self.query(node*2 + 1, mid+1, end, left, right)
+            if right%2 == 0:
+                total += self.tree[right]
+                right -= 1
 
-        return left_val + right_val
+            left //= 2
+            right //= 2
 
-    def update(self, node, start, end, target_idx, new_val):
-        if target_idx < start or target_idx > end:
-            return self.tree[node]
+        return total
 
-        if start == end:
-            self.tree[node] = new_val
-            return self.tree[node]
+    def update(self, target_idx, val):
+        idx = self.n + target_idx
+        self.tree[idx] = val
 
-        mid = (start + end) // 2
-        left_val = self.update(node*2, start, mid, target_idx, new_val)
-        right_val = self.update(node*2 + 1, mid+1, end, target_idx, new_val)
-
-        self.tree[node] = left_val + right_val
-
-        return self.tree[node]
+        while idx > 1:
+            idx //= 2
+            self.tree[idx] = self.tree[idx*2] + self.tree[idx*2 + 1]
 
 
 if __name__ == '__main__':
@@ -51,8 +51,8 @@ if __name__ == '__main__':
 
         pos = [0] * (n + 1)
         for i in range(1, n + 1):
-            pos[i] = n + i - 1
-            segment_tree.update(1, 0, total_size-1, pos[i], 1)
+            pos[i] = m + i - 1
+            segment_tree.update(pos[i], 1)
 
         answer = []
 
@@ -60,13 +60,14 @@ if __name__ == '__main__':
         for order in orders:
             curr_pos = pos[order]
 
-            cnt = segment_tree.query(1, 0, total_size-1, 0, curr_pos-1)
+            cnt = segment_tree.query(0, curr_pos-1)
             answer.append(cnt)
 
-            segment_tree.update(1, 0, total_size-1, curr_pos, 0)
+            segment_tree.update(curr_pos, 0)
 
             pos[order] = top
-            segment_tree.update(1, 0, total_size-1, pos[order], 1)
+            segment_tree.update(pos[order], 1)
+
             top -= 1
 
         answer = ' '.join(map(str, answer))
