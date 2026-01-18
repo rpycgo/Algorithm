@@ -1,19 +1,30 @@
- def solution(n, times):
-	answer = 0
-	times.sort(key = lambda x: x[1])
-	start = -1
+import sys
+
+
+input = sys.stdin.readline
+
+
+def main():
+	N = int(input())
+	times = [
+		tuple(map(int, input().split()))
+		for _
+		in range(N)
+	]
+
+	times.sort(key=lambda x: (x[1], x[0]))
+
+	cnt = 0
+	end_time = 0
+
+	for start, end in times:
+		if start >= end_time:
+			cnt += 1
+			end_time = end
+
+	print(cnt)
+
+
+if __name__ == '__main__':
+	main()
 	
-	for time in times:
-		if start < time[0]:
-			answer += 1
-			start = time[1]
-			
-	return answer
-
-
-times = []
-n = int(inputs())
-for _ in range(n):
-  times.append(list(map(int, input().split())))
-  
-solution(n, times)
