@@ -13,7 +13,7 @@ def dijkstra(start_node, n, adj):
     while queue:
         curr_cost, curr_node = heapq.heappop(queue)
 
-        if curr_cost < dists[curr_node]:
+        if dists[curr_node] < curr_cost:
             continue
 
         for next_node, weight in adj[curr_node]:
