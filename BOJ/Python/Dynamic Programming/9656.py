@@ -7,8 +7,14 @@ input = sys.stdin.readline
 def main():
     N = int(input())
 
-    dp = [0] * (N+1)
+    if N == 1 or N == 3:
+        print('CY')
+        return
+    if N == 2:
+        print('SK')
+        return
 
+    dp = [0] * (N+1)
     dp[1] = 0
     dp[2] = 1
     dp[3] = 0
