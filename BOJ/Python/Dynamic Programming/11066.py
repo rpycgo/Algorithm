@@ -14,20 +14,26 @@ def main():
         for i in range(K):
             pre_sum[i+1] = pre_sum[i] + file_sizes[i]
 
-        dp = [[0] * K for _ in range(K)]
+        dp = [[0] * (K+1) for _ in range(K+1)]
+        optimizations = [[0] * (K+1) for _ in range(K+1)]
+
+        for i in range(1, K+1):
+            optimizations[i][i] = i
 
         for length in range(1, K):
-            for i in range(K-length):
+            for i in range(1, K-length+1):
                 j = i + length
 
                 dp[i][j] = float('inf')
-                for k in range(i, j):
-                    cost = dp[i][k] + dp[k+1][j] + (pre_sum[j+1] - pre_sum[i])
+                for k in range(optimizations[i][j-1], optimizations[i+1][j]+1):
+                    if k < j:
+                        cost = dp[i][k] + dp[k+1][j] + (pre_sum[j] - pre_sum[i-1])
 
-                    if dp[i][j] > cost:
-                        dp[i][j] = cost
+                        if dp[i][j] > cost:
+                            dp[i][j] = cost
+                            optimizations[i][j] = k
 
-        answer = dp[0][K-1]
+        answer = dp[1][K]
         print(answer)
 
 
